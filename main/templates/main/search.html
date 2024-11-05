@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Buscar Pets</title>
+</head>
+<body>
+    <h1>Buscar Pets</h1>
+    <form method="get">
+        Tipo de Pet: <input type="text" name="pet_type"><br>
+        Raça: <input type="text" name="breed"><br>
+        Idade: <input type="number" name="age"><br>
+        Localização: <input type="text" name="location"><br>
+        <button type="submit">Buscar</button>
+    </form>
+    <h2>Resultados:</h2>
+    {% for pet in pets %}
+        <div>
+            <h3>{{ pet.name }} ({{ pet.pet_type }})</h3>
+            <p>{{ pet.description }}</p>
+            {% if pet.photo %}
+                <img src="{{ pet.photo.url }}" alt="{{ pet.name }}" width="200">
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>Nenhum pet encontrado.</p>
+    {% endfor %}
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pet Match - Página Inicial</title>
+</head>
+<body>
+    <h1>Bem-vindo ao Pet Match!</h1>
+    <h2>Pets Disponíveis:</h2>
+    {% for pet in pets %}
+        <div>
+            <h3>{{ pet.name }} ({{ pet.pet_type }})</h3>
+            <p>{{ pet.description }}</p>
+            {% if pet.photo %}
+                <img src="{{ pet.photo.url }}" alt="{{ pet.name }}" width="200">
+            {% endif %}
+            <p>Localização: {{ pet.location }}</p>
+            <p>Interesses: {{ pet.interests }}</p>
+        </div>
+    {% empty %}
+        <p>Nenhum pet cadastrado.</p>
+    {% endfor %}
+</body>
+</html>

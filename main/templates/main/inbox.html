@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caixa de Entrada</title>
+</head>
+<body>
+    <h1>Sua Caixa de Entrada</h1>
+    {% for message in messages %}
+        <div>
+            <p><strong>De:</strong> {{ message.sender.username }}</p>
+            <p>{{ message.content }}</p>
+            <p><em>{{ message.timestamp }}</em></p>
+        </div>
+    {% empty %}
+        <p>Você não tem mensagens.</p>
+    {% endfor %}
+</body>
+</html>

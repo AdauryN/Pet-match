@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enviar Mensagem</title>
+</head>
+<body>
+    <h1>Enviar Mensagem para {{ recipient.username }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <textarea name="content" rows="5" cols="40"></textarea><br>
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+</html>

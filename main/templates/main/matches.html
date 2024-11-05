@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Matches para Seu Pet</title>
+</head>
+<body>
+    <h1>Matches para {{ pet.name }}</h1>
+    {% for match in matches %}
+        <div>
+            <h3>{{ match.name }} ({{ match.pet_type }})</h3>
+            <p>{{ match.description }}</p>
+            {% if match.photo %}
+                <img src="{{ match.photo.url }}" alt="{{ match.name }}" width="200">
+            {% endif %}
+            <p>Localização: {{ match.location }}</p>
+            <p>Interesses: {{ match.interests }}</p>
+            <a href="{% url 'send_message' match.owner.id %}">Enviar Mensagem</a>
+        </div>
+    {% empty %}
+        <p>Nenhum match encontrado.</p>
+    {% endfor %}
+</body>
+</html>
