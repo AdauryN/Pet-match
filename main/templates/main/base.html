@@ -2,23 +2,32 @@
 <html>
 <head>
     <title>Pet Match</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 </head>
 <body>
+    <header>
+        <h1>Pet Match</h1>
+    </header>
     <nav>
         {% if user.is_authenticated %}
-            <p>Olá, {{ user.username }}! <a href="{% url 'logout' %}">Sair</a></p>
-            <a href="{% url 'home' %}">Home</a> |
-            <a href="{% url 'profile' %}">Perfil</a> |
-            <a href="{% url 'find_matches' %}">Encontrar Matches</a> |
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'profile' %}">Perfil</a>
+            <a href="{% url 'find_matches' %}">Encontrar Matches</a>
             <a href="{% url 'inbox' %}">Caixa de Entrada</a>
+            <a href="{% url 'logout' %}">Sair</a>
         {% else %}
-            <a href="{% url 'home' %}">Home</a> |
-            <a href="{% url 'login' %}">Login</a> |
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'login' %}">Login</a>
             <a href="{% url 'signup' %}">Cadastre-se</a>
         {% endif %}
     </nav>
-    <hr>
-    {% block content %}
-    {% endblock %}
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2024 Pet Match</p>
+    </footer>
 </body>
 </html>

@@ -83,3 +83,23 @@ def search(request):
 def profile(request):
     pets = Pet.objects.filter(owner=request.user)
     return render(request, 'main/profile.html', {'pets': pets})
+
+@login_required
+def edit_pet(request, pet_id):
+    pet = Pet.objects.get(id=pet_id, owner=request.user)
+    if request.method == 'POST':
+        form = PetForm(request.POST, request.FILES, instance=pet)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = PetForm(instance=pet)
+    return render(request, 'main/edit_pet.html', {'form': form})
+
+@login_required
+def delete_pet(request, pet_id):
+    pet = Pet.objects.get(id=pet_id, owner=request.user)
+    if request.method == 'POST':
+        pet.delete()
+        return redirect('profile')
+    return render(request, 'main/delete_pet.html', {'pet': pet})

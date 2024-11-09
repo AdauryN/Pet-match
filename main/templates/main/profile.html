@@ -1,18 +1,22 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-    <h1>Perfil de {{ user.username }}</h1>
-    <p><a href="{% url 'create_pet' %}">Cadastrar Novo Pet</a></p>
+    <h2>Perfil de {{ user.username }}</h2>
+    <p><a class="button" href="{% url 'create_pet' %}">Cadastrar Novo Pet</a></p>
     <h2>Seus Pets:</h2>
     {% for pet in pets %}
-        <div>
+        <div class="pet-card">
             <h3>{{ pet.name }} ({{ pet.pet_type }})</h3>
-            <p>{{ pet.description }}</p>
             {% if pet.photo %}
-                <img src="{{ pet.photo.url }}" alt="{{ pet.name }}" width="200">
+                <img src="{{ pet.photo.url }}" alt="{{ pet.name }}">
             {% endif %}
-            <p>Localização: {{ pet.location }}</p>
-            <p>Interesses: {{ pet.interests }}</p>
+            <p>{{ pet.description }}</p>
+            <p><strong>Localização:</strong> {{ pet.location }}</p>
+            <p><strong>Interesses:</strong> {{ pet.interests }}</p>
+            <p>
+                <a class="button" href="{% url 'edit_pet' pet.id %}">Editar</a>
+                <a class="button" href="{% url 'delete_pet' pet.id %}">Excluir</a>
+            </p>
         </div>
     {% empty %}
         <p>Você ainda não cadastrou nenhum pet.</p>

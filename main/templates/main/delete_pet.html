@@ -1,0 +1,11 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+    <h1>Excluir Pet</h1>
+    <p>Tem certeza de que deseja excluir {{ pet.name }}?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Sim, excluir</button>
+        <a href="{% url 'profile' %}">Cancelar</a>
+    </form>
+{% endblock %}

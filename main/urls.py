@@ -14,4 +14,6 @@ urlpatterns = [
     path('matches/', views.find_matches, name='find_matches'),
     path('send_message/<int:recipient_id>/', views.send_message, name='send_message'),
     path('inbox/', views.inbox, name='inbox'),
+    path('edit_pet/<int:pet_id>/', views.edit_pet, name='edit_pet'),
+    path('delete_pet/<int:pet_id>/', views.delete_pet, name='delete_pet'),
 ]
