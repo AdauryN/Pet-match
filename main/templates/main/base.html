@@ -10,17 +10,19 @@
         <h1>Pet Match</h1>
     </header>
     <nav>
-        {% if user.is_authenticated %}
-            <a href="{% url 'home' %}">Home</a>
-            <a href="{% url 'profile' %}">Perfil</a>
-            <a href="{% url 'find_matches' %}">Encontrar Matches</a>
-            <a href="{% url 'inbox' %}">Caixa de Entrada</a>
-            <a href="{% url 'logout' %}">Sair</a>
-        {% else %}
-            <a href="{% url 'home' %}">Home</a>
-            <a href="{% url 'login' %}">Login</a>
-            <a href="{% url 'signup' %}">Cadastre-se</a>
-        {% endif %}
+        <ul>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'profile' %}">Perfil</a></li>
+                <li><a href="{% url 'find_matches' %}">Encontrar Matches</a></li>
+                <li><a href="{% url 'inbox' %}">Caixa de Entrada</a></li>
+                <li><a href="{% url 'logout' %}">Sair</a></li>
+            {% else %}
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'signup' %}">Cadastre-se</a></li>
+            {% endif %}
+        </ul>
     </nav>
     <main>
         {% block content %}

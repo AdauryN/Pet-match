@@ -1,11 +1,11 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-    <h1>Excluir Pet</h1>
-    <p>Tem certeza de que deseja excluir {{ pet.name }}?</p>
+    <h2>Excluir Pet</h2>
+    <p>Tem certeza de que deseja excluir <strong>{{ pet.name }}</strong>?</p>
     <form method="post">
         {% csrf_token %}
         <button type="submit">Sim, excluir</button>
-        <a href="{% url 'profile' %}">Cancelar</a>
+        <a class="button button-secondary" href="{% url 'profile' %}">Cancelar</a>
     </form>
 {% endblock %}

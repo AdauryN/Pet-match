@@ -1,12 +1,12 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-    <h1>Sua Caixa de Entrada</h1>
+    <h2>Sua Caixa de Entrada</h2>
     {% for message in messages %}
-        <div>
+        <div class="message-card">
             <p><strong>De:</strong> {{ message.sender.username }}</p>
             <p>{{ message.content }}</p>
-            <p><em>{{ message.timestamp }}</em></p>
+            <p><em>{{ message.timestamp|date:"d/m/Y H:i" }}</em></p>
         </div>
     {% empty %}
         <p>Você não tem mensagens.</p>

@@ -1,17 +1,19 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-    <h1>Matches para Seu Pet</h1>
+    <h2>Matches para Seu Pet</h2>
     {% for match in matches %}
-        <div>
-            <h3>{{ match.name }} ({{ match.pet_type }})</h3>
-            <p>{{ match.description }}</p>
+        <div class="pet-card">
             {% if match.photo %}
-                <img src="{{ match.photo.url }}" alt="{{ match.name }}" width="200">
+                <img src="{{ match.photo.url }}" alt="{{ match.name }}">
             {% endif %}
-            <p>Localização: {{ match.location }}</p>
-            <p>Interesses: {{ match.interests }}</p>
-            <a href="{% url 'send_message' match.owner.id %}">Enviar Mensagem</a>
+            <div class="details">
+                <h3>{{ match.name }} ({{ match.pet_type }})</h3>
+                <p>{{ match.description }}</p>
+                <p><strong>Localização:</strong> {{ match.location }}</p>
+                <p><strong>Interesses:</strong> {{ match.interests }}</p>
+                <a class="button" href="{% url 'send_message' match.owner.id %}">Enviar Mensagem</a>
+            </div>
         </div>
     {% empty %}
         <p>Nenhum match encontrado.</p>
