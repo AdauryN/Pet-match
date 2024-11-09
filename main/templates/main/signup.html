@@ -1,10 +1,11 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-    <h1>Cadastrar Novo Pet</h1>
-    <form method="post" enctype="multipart/form-data">
+    <h1>Cadastre-se</h1>
+    <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Cadastrar</button>
     </form>
+    <p>Já tem uma conta? <a href="{% url 'login' %}">Faça login</a></p>
 {% endblock %}

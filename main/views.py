@@ -1,14 +1,27 @@
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 
-from .forms import PetForm
+from .forms import PetForm, SignUpForm
 from .models import Message, Pet, Preferences
 
 
 def home(request):
     pets = Pet.objects.all()
     return render(request, 'main/home.html', {'pets': pets})
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # Autentica e loga o usuário
+            login(request, user)
+            return redirect('home')
+    else:
+        form = SignUpForm()
+    return render(request, 'main/signup.html', {'form': form})
 
 @login_required
 def create_pet(request):
@@ -65,3 +78,8 @@ def search(request):
     if location:
         pets = pets.filter(location__icontains=location)
     return render(request, 'main/search.html', {'pets': pets})
+
+@login_required
+def profile(request):
+    pets = Pet.objects.filter(owner=request.user)
+    return render(request, 'main/profile.html', {'pets': pets})

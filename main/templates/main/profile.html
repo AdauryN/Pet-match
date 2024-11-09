@@ -1,11 +1,9 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-    <h1>Bem-vindo ao Pet Match!</h1>
-    {% if user.is_authenticated %}
-        <p>Olá, {{ user.username }}!</p>
-    {% endif %}
-    <h2>Pets Disponíveis:</h2>
+    <h1>Perfil de {{ user.username }}</h1>
+    <p><a href="{% url 'create_pet' %}">Cadastrar Novo Pet</a></p>
+    <h2>Seus Pets:</h2>
     {% for pet in pets %}
         <div>
             <h3>{{ pet.name }} ({{ pet.pet_type }})</h3>
@@ -17,6 +15,6 @@
             <p>Interesses: {{ pet.interests }}</p>
         </div>
     {% empty %}
-        <p>Nenhum pet cadastrado.</p>
+        <p>Você ainda não cadastrou nenhum pet.</p>
     {% endfor %}
 {% endblock %}
