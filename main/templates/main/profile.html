@@ -3,11 +3,6 @@
 {% block content %}
     <h2>Perfil de {{ user.username }}</h2>
     <p><a class="button" href="{% url 'create_pet' %}">Cadastrar Novo Pet</a></p>
-    {% if pets %}
-        <p><a class="button" href="{% url 'edit_preferences' %}">Editar Preferências do Pet</a></p>
-    {% else %}
-        <p>Você precisa cadastrar um pet primeiro.</p>
-    {% endif %}
     <h2>Seus Pets:</h2>
     {% for pet in pets %}
         <div class="pet-card">
@@ -19,10 +14,11 @@
                 <p>{{ pet.description }}</p>
                 <p><strong>Localização:</strong> {{ pet.location }}</p>
                 <p><strong>Interesses:</strong> {{ pet.interests }}</p>
-                <p>
+                <div class="pet-actions">
                     <a class="button" href="{% url 'edit_pet' pet.id %}">Editar</a>
                     <a class="button button-secondary" href="{% url 'delete_pet' pet.id %}">Excluir</a>
-                </p>
+                    <a class="button" href="{% url 'edit_preferences' pet.id %}">Editar Preferências</a>
+                </div>
             </div>
         </div>
     {% empty %}

@@ -119,12 +119,12 @@ def create_preferences(request, pet_id):
     return render(request, 'main/create_preferences.html', {'form': form, 'pet': pet})
 
 @login_required
-def edit_preferences(request):
-    pet = Pet.objects.get(owner=request.user)
+def edit_preferences(request, pet_id):
+    pet = get_object_or_404(Pet, id=pet_id, owner=request.user)
     try:
         preferences = Preferences.objects.get(pet=pet)
     except Preferences.DoesNotExist:
-        return redirect('create_preferences')
+        return redirect('create_preferences', pet_id=pet.id)
     if request.method == 'POST':
         form = PreferencesForm(request.POST, instance=preferences)
         if form.is_valid():
@@ -132,7 +132,7 @@ def edit_preferences(request):
             return redirect('profile')
     else:
         form = PreferencesForm(instance=preferences)
-    return render(request, 'main/edit_preferences.html', {'form': form})
+    return render(request, 'main/edit_preferences.html', {'form': form, 'pet': pet})
 
 @login_required
 def find_matches(request):
@@ -168,7 +168,7 @@ def pet_detail(request, pet_id):
     my_pets = Pet.objects.filter(owner=request.user)
     if request.method == 'POST':
         my_pet_id = request.POST['my_pet']
-        my_pet = Pet.objects.get(id=my_pet_id, owner=request.user)
+        my_pet = get_object_or_404(Pet, id=my_pet_id, owner=request.user)
         message_content = request.POST['message']
         Message.objects.create(
             sender=request.user,
@@ -177,5 +177,3 @@ def pet_detail(request, pet_id):
         )
         return redirect('inbox')
     return render(request, 'main/pet_detail.html', {'pet': pet, 'my_pets': my_pets})
-
-

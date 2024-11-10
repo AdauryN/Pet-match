@@ -101,6 +101,15 @@ footer {
 
 .pet-card .details {
     flex: 1;
+    min-width: 250px;
+}
+
+
+.pet-actions {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .pet-card .pet-actions {
@@ -111,7 +120,6 @@ footer {
     margin-right: 10px;
 }
 
-/* Botões */
 button, .button {
     background-color: #FFA726; /* Laranja */
     color: white;
@@ -121,6 +129,7 @@ button, .button {
     cursor: pointer;
     font-size: 16px;
     text-decoration: none;
+    margin: 5px; /* Adicionado para criar espaço ao redor dos botões */
 }
 
 button:hover, .button:hover {
@@ -131,6 +140,7 @@ button:hover, .button:hover {
     background-color: #FFF3E0; /* Amarelo muito claro */
     color: #5D4037;
     border: 1px solid #FFB74D;
+    margin: 5px; /* Adicionado para o botão secundário também */
 }
 
 .button-secondary:hover {
@@ -158,7 +168,6 @@ form input, form textarea, form select {
     border-radius: 5px;
 }
 
-/* Responsividade */
 @media (max-width: 768px) {
     .pet-card {
         flex-direction: column;
@@ -170,11 +179,13 @@ form input, form textarea, form select {
         margin-bottom: 10px;
     }
 
-    nav ul {
-        flex-direction: column;
+    .pet-card .details {
+        min-width: 100%;
     }
 
-    nav li {
-        margin: 5px 0;
+    .pet-actions {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }
+

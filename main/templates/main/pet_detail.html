@@ -6,8 +6,6 @@
         <img src="{{ pet.photo.url }}" alt="{{ pet.name }}">
     {% endif %}
     <p>{{ pet.description }}</p>
-    <p><strong>Raça:</strong> {{ pet.breed }}</p>
-    <p><strong>Idade:</strong> {{ pet.age }}</p>
     <p><strong>Localização:</strong> {{ pet.location }}</p>
     <p><strong>Interesses:</strong> {{ pet.interests }}</p>
     {% if pet.owner != user %}
@@ -23,7 +21,7 @@
             <label for="message">Mensagem:</label>
             <textarea name="message" required></textarea><br>
             <button type="submit">Enviar Solicitação</button>
-        </form>        
+        </form>
     {% else %}
         <p>Este é o seu próprio pet.</p>
     {% endif %}
