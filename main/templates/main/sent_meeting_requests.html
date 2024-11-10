@@ -1,0 +1,23 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+    <h2>Solicitações de Encontro Enviadas</h2>
+    {% for req in requests_sent %}
+        <div class="request-card">
+            <p><strong>Para:</strong> {{ req.receiver_pet.name }} ({{ req.receiver_pet.owner.username }})</p>
+            <p><strong>Seu Pet:</strong> {{ req.sender_pet.name }}</p>
+            <p><strong>Local Sugerido:</strong> {{ req.location }}</p>
+            <p><strong>Mensagem:</strong> {{ req.message }}</p>
+            <p><strong>Status:</strong> {{ req.get_status_display }}</p>
+            {% if req.status == 'accepted' %}
+                <p><a class="button" href="{% url 'chat' req.id %}">Abrir Chat</a></p>
+            {% elif req.status == 'pending' %}
+                <p>Sua solicitação está pendente.</p>
+            {% elif req.status == 'declined' %}
+                <p>Sua solicitação foi recusada.</p>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>Você não enviou nenhuma solicitação de encontro.</p>
+    {% endfor %}
+{% endblock %}

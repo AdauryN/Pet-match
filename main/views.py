@@ -196,6 +196,13 @@ def accept_meeting_request(request, request_id):
     meeting_request.status = 'accepted'
     meeting_request.save()
     messages.success(request, 'Solicitação de encontro aceita.')
+
+    Message.objects.create(
+        sender=request.user,
+        recipient=meeting_request.sender_pet.owner,
+        content=f"Sua solicitação de encontro com {meeting_request.receiver_pet.name} foi aceita!"
+    )
+
     return redirect('chat', meeting_request_id=meeting_request.id)
 
 @login_required
@@ -209,13 +216,15 @@ def decline_meeting_request(request, request_id):
 @login_required
 def chat(request, meeting_request_id):
     meeting_request = get_object_or_404(MeetingRequest, id=meeting_request_id)
-    # Verificar se o usuário faz parte do chat
     if request.user not in [meeting_request.sender_pet.owner, meeting_request.receiver_pet.owner]:
         return redirect('home')
 
     if meeting_request.status != 'accepted':
         messages.warning(request, 'O chat só está disponível após a solicitação ser aceita.')
-        return redirect('meeting_requests')
+        if request.user == meeting_request.receiver_pet.owner:
+            return redirect('meeting_requests')
+        else:
+            return redirect('sent_meeting_requests')
 
     if request.method == 'POST':
         form = ChatMessageForm(request.POST)
@@ -230,3 +239,9 @@ def chat(request, meeting_request_id):
 
     messages = ChatMessage.objects.filter(meeting_request=meeting_request).order_by('timestamp')
     return render(request, 'main/chat.html', {'meeting_request': meeting_request, 'messages': messages, 'form': form})
+
+
+@login_required
+def sent_meeting_requests(request):
+    requests_sent = MeetingRequest.objects.filter(sender_pet__owner=request.user)
+    return render(request, 'main/sent_meeting_requests.html', {'requests_sent': requests_sent})

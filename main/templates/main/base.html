@@ -17,7 +17,8 @@
                 <li><a href="{% url 'find_matches' %}">Encontrar Matches</a></li>
                 <li><a href="{% url 'inbox' %}">Caixa de Entrada</a></li>
                 <li><a href="{% url 'logout' %}">Sair</a></li>
-                <li><a href="{% url 'meeting_requests' %}">Solicitações de Encontro</a></li>
+                <li><a href="{% url 'meeting_requests' %}">Solicitações Recebidas</a></li>
+                <li><a href="{% url 'sent_meeting_requests' %}">Solicitações Enviadas</a></li>
             {% else %}
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'login' %}">Login</a></li>

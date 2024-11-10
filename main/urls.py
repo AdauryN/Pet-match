@@ -24,4 +24,5 @@ urlpatterns = [
     path('meeting_request/accept/<int:request_id>/', views.accept_meeting_request, name='accept_meeting_request'),
     path('meeting_request/decline/<int:request_id>/', views.decline_meeting_request, name='decline_meeting_request'),
     path('chat/<int:meeting_request_id>/', views.chat, name='chat'),
+    path('meeting_requests/sent/', views.sent_meeting_requests, name='sent_meeting_requests'),
 ]
