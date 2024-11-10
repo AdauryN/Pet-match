@@ -9,10 +9,12 @@
     {% for pet in pets %}
         <div class="pet-card">
             {% if pet.photo %}
-                <img src="{{ pet.photo.url }}" alt="{{ pet.name }}">
+                <a href="{% url 'pet_detail' pet.id %}">
+                    <img src="{{ pet.photo.url }}" alt="{{ pet.name }}">
+                </a>
             {% endif %}
             <div class="details">
-                <h3>{{ pet.name }} ({{ pet.pet_type }})</h3>
+                <h3><a href="{% url 'pet_detail' pet.id %}">{{ pet.name }} ({{ pet.pet_type }})</a></h3>
                 <p>{{ pet.description }}</p>
                 <p><strong>Localização:</strong> {{ pet.location }}</p>
                 <p><strong>Interesses:</strong> {{ pet.interests }}</p>

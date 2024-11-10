@@ -20,4 +20,4 @@ class SignUpForm(UserCreationForm):
 class PreferencesForm(forms.ModelForm):
     class Meta:
         model = Preferences
-        fields = ['pet_type', 'breed', 'age_min', 'age_max', 'interests']
+        fields = ['pet_type', 'interests']

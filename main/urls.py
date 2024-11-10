@@ -18,4 +18,6 @@ urlpatterns = [
     path('delete_pet/<int:pet_id>/', views.delete_pet, name='delete_pet'),
     path('preferences/create/', views.create_preferences, name='create_preferences'),
     path('preferences/edit/', views.edit_preferences, name='edit_preferences'),
+    path('pet/<int:pet_id>/', views.pet_detail, name='pet_detail'),
+    path('preferences/create/<int:pet_id>/', views.create_preferences, name='create_preferences'),
 ]

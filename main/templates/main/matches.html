@@ -5,14 +5,15 @@
     {% for match in matches %}
         <div class="pet-card">
             {% if match.photo %}
-                <img src="{{ match.photo.url }}" alt="{{ match.name }}">
+                <a href="{% url 'pet_detail' match.id %}">
+                    <img src="{{ match.photo.url }}" alt="{{ match.name }}">
+                </a>
             {% endif %}
             <div class="details">
-                <h3>{{ match.name }} ({{ match.pet_type }})</h3>
+                <h3><a href="{% url 'pet_detail' match.id %}">{{ match.name }} ({{ match.pet_type }})</a></h3>
                 <p>{{ match.description }}</p>
                 <p><strong>Localização:</strong> {{ match.location }}</p>
                 <p><strong>Interesses:</strong> {{ match.interests }}</p>
-                <a class="button" href="{% url 'send_message' match.owner.id %}">Enviar Mensagem</a>
             </div>
         </div>
     {% empty %}

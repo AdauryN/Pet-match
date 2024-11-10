@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import PetForm, PreferencesForm, SignUpForm
 from .models import Message, Pet, Preferences
@@ -105,8 +105,8 @@ def delete_pet(request, pet_id):
     return render(request, 'main/delete_pet.html', {'pet': pet})
 
 @login_required
-def create_preferences(request):
-    pet = Pet.objects.get(owner=request.user)
+def create_preferences(request, pet_id):
+    pet = get_object_or_404(Pet, id=pet_id, owner=request.user)
     if request.method == 'POST':
         form = PreferencesForm(request.POST)
         if form.is_valid():
@@ -116,7 +116,7 @@ def create_preferences(request):
             return redirect('profile')
     else:
         form = PreferencesForm()
-    return render(request, 'main/create_preferences.html', {'form': form})
+    return render(request, 'main/create_preferences.html', {'form': form, 'pet': pet})
 
 @login_required
 def edit_preferences(request):
@@ -136,19 +136,46 @@ def edit_preferences(request):
 
 @login_required
 def find_matches(request):
-    try:
-        pet = Pet.objects.get(owner=request.user)
-    except Pet.DoesNotExist:
+    pets = Pet.objects.filter(owner=request.user)
+    if not pets.exists():
         return redirect('create_pet')
+
+    if request.method == 'POST':
+        pet_id = request.POST.get('pet')
+        pet = get_object_or_404(Pet, id=pet_id, owner=request.user)
+    else:
+        if pets.count() == 1:
+            pet = pets.first()
+        else:
+            return render(request, 'main/select_pet.html', {'pets': pets})
+
     try:
         preferences = Preferences.objects.get(pet=pet)
     except Preferences.DoesNotExist:
-        return redirect('create_preferences')
+        return redirect('create_preferences', pet_id=pet.id)
+
     matches = Pet.objects.filter(
         pet_type=preferences.pet_type,
-        age__gte=preferences.age_min,
-        age__lte=preferences.age_max,
         interests__icontains=preferences.interests,
         location__icontains=pet.location
     ).exclude(owner=request.user)
-    return render(request, 'main/matches.html', {'matches': matches})
+
+    return render(request, 'main/matches.html', {'matches': matches, 'pet': pet})
+
+@login_required
+def pet_detail(request, pet_id):
+    pet = Pet.objects.get(id=pet_id)
+    my_pets = Pet.objects.filter(owner=request.user)
+    if request.method == 'POST':
+        my_pet_id = request.POST['my_pet']
+        my_pet = Pet.objects.get(id=my_pet_id, owner=request.user)
+        message_content = request.POST['message']
+        Message.objects.create(
+            sender=request.user,
+            recipient=pet.owner,
+            content=f"Solicitação de encontro entre {my_pet.name} e {pet.name}:\n\n{message_content}"
+        )
+        return redirect('inbox')
+    return render(request, 'main/pet_detail.html', {'pet': pet, 'my_pets': my_pets})
+
+

@@ -19,9 +19,6 @@ class Pet(models.Model):
 class Preferences(models.Model):
     pet = models.OneToOneField(Pet, on_delete=models.CASCADE)
     pet_type = models.CharField("Tipo de Pet Preferido", max_length=50)
-    breed = models.CharField("Raça Preferida", max_length=50, blank=True, null=True)
-    age_min = models.IntegerField("Idade Mínima")
-    age_max = models.IntegerField("Idade Máxima")
     interests = models.CharField("Interesses", max_length=200)
 
     def __str__(self):
