@@ -32,3 +32,29 @@ class Message(models.Model):
 
     def __str__(self):
         return f"Mensagem de {self.sender.username} para {self.recipient.username}"
+
+class MeetingRequest(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pendente'),
+        ('accepted', 'Aceito'),
+        ('declined', 'Recusado'),
+    ]
+
+    sender_pet = models.ForeignKey(Pet, related_name='sent_meeting_requests', on_delete=models.CASCADE)
+    receiver_pet = models.ForeignKey(Pet, related_name='received_meeting_requests', on_delete=models.CASCADE)
+    location = models.CharField("Local Sugerido", max_length=200)
+    message = models.TextField("Mensagem")
+    status = models.CharField("Status", max_length=10, choices=STATUS_CHOICES, default='pending')
+    timestamp = models.DateTimeField("Data e Hora", auto_now_add=True)
+
+    def __str__(self):
+        return f"Encontro de {self.sender_pet.name} para {self.receiver_pet.name} ({self.status})"
+    
+class ChatMessage(models.Model):
+    meeting_request = models.ForeignKey(MeetingRequest, related_name='chat_messages', on_delete=models.CASCADE)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField("Mensagem")
+    timestamp = models.DateTimeField("Data e Hora", auto_now_add=True)
+
+    def __str__(self):
+        return f"Mensagem de {self.sender.username} em {self.timestamp}"

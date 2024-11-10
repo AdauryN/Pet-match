@@ -6,20 +6,16 @@
         <img src="{{ pet.photo.url }}" alt="{{ pet.name }}">
     {% endif %}
     <p>{{ pet.description }}</p>
+    <p><strong>Raça:</strong> {{ pet.breed }}</p>
+    <p><strong>Idade:</strong> {{ pet.age }}</p>
     <p><strong>Localização:</strong> {{ pet.location }}</p>
     <p><strong>Interesses:</strong> {{ pet.interests }}</p>
-    {% if pet.owner != user %}
-        <h3>Agendar Encontro</h3>
+
+    {% if not is_owner %}
+        <h3>Enviar Solicitação de Encontro</h3>
         <form method="post">
             {% csrf_token %}
-            <label for="my_pet">Selecione seu pet:</label>
-            <select name="my_pet" required>
-                {% for my_pet in my_pets %}
-                    <option value="{{ my_pet.id }}">{{ my_pet.name }}</option>
-                {% endfor %}
-            </select><br>
-            <label for="message">Mensagem:</label>
-            <textarea name="message" required></textarea><br>
+            {{ form.as_p }}
             <button type="submit">Enviar Solicitação</button>
         </form>
     {% else %}

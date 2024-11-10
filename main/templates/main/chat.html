@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+    <h2>Chat entre {{ meeting_request.sender_pet.owner.username }} e {{ meeting_request.receiver_pet.owner.username }}</h2>
+    <div class="chat-messages">
+        {% for message in messages %}
+            <div class="chat-message">
+                <p><strong>{{ message.sender.username }}:</strong> {{ message.message }}</p>
+                <p><em>{{ message.timestamp|date:"d/m/Y H:i" }}</em></p>
+            </div>
+        {% endfor %}
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enviar Mensagem</button>
+    </form>
+{% endblock %}

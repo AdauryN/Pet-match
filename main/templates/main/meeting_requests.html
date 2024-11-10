@@ -1,0 +1,19 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+    <h2>Solicitações de Encontro Recebidas</h2>
+    {% for req in requests %}
+        <div class="request-card">
+            <p><strong>De:</strong> {{ req.sender_pet.name }} ({{ req.sender_pet.owner.username }})</p>
+            <p><strong>Para seu pet:</strong> {{ req.receiver_pet.name }}</p>
+            <p><strong>Local Sugerido:</strong> {{ req.location }}</p>
+            <p><strong>Mensagem:</strong> {{ req.message }}</p>
+            <p>
+                <a class="button" href="{% url 'accept_meeting_request' req.id %}">Aceitar</a>
+                <a class="button button-secondary" href="{% url 'decline_meeting_request' req.id %}">Recusar</a>
+            </p>
+        </div>
+    {% empty %}
+        <p>Você não tem solicitações de encontro pendentes.</p>
+    {% endfor %}
+{% endblock %}

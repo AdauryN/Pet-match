@@ -20,4 +20,8 @@ urlpatterns = [
     path('preferences/edit/<int:pet_id>/', views.edit_preferences, name='edit_preferences'),
     path('pet/<int:pet_id>/', views.pet_detail, name='pet_detail'),
     path('preferences/create/<int:pet_id>/', views.create_preferences, name='create_preferences'),
+    path('meeting_requests/', views.meeting_requests, name='meeting_requests'),
+    path('meeting_request/accept/<int:request_id>/', views.accept_meeting_request, name='accept_meeting_request'),
+    path('meeting_request/decline/<int:request_id>/', views.decline_meeting_request, name='decline_meeting_request'),
+    path('chat/<int:meeting_request_id>/', views.chat, name='chat'),
 ]

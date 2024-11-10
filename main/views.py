@@ -1,10 +1,12 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import PetForm, PreferencesForm, SignUpForm
-from .models import Message, Pet, Preferences
+from .forms import (ChatMessageForm, MeetingRequestForm, PetForm,
+                    PreferencesForm, SignUpForm)
+from .models import ChatMessage, MeetingRequest, Message, Pet, Preferences
 
 
 def home(request):
@@ -164,16 +166,67 @@ def find_matches(request):
 
 @login_required
 def pet_detail(request, pet_id):
-    pet = Pet.objects.get(id=pet_id)
-    my_pets = Pet.objects.filter(owner=request.user)
+    pet = get_object_or_404(Pet, id=pet_id)
+    if pet.owner == request.user:
+        is_owner = True
+    else:
+        is_owner = False
+
     if request.method == 'POST':
-        my_pet_id = request.POST['my_pet']
-        my_pet = get_object_or_404(Pet, id=my_pet_id, owner=request.user)
-        message_content = request.POST['message']
-        Message.objects.create(
-            sender=request.user,
-            recipient=pet.owner,
-            content=f"Solicitação de encontro entre {my_pet.name} e {pet.name}:\n\n{message_content}"
-        )
-        return redirect('inbox')
-    return render(request, 'main/pet_detail.html', {'pet': pet, 'my_pets': my_pets})
+        form = MeetingRequestForm(request.POST, user=request.user)
+        if form.is_valid():
+            meeting_request = form.save(commit=False)
+            meeting_request.receiver_pet = pet
+            meeting_request.save()
+            messages.success(request, 'Solicitação de encontro enviada com sucesso!')
+            return redirect('inbox')
+    else:
+        form = MeetingRequestForm(user=request.user)
+
+    return render(request, 'main/pet_detail.html', {'pet': pet, 'form': form, 'is_owner': is_owner})
+
+@login_required
+def meeting_requests(request):
+    requests = MeetingRequest.objects.filter(receiver_pet__owner=request.user, status='pending')
+    return render(request, 'main/meeting_requests.html', {'requests': requests})
+
+@login_required
+def accept_meeting_request(request, request_id):
+    meeting_request = get_object_or_404(MeetingRequest, id=request_id, receiver_pet__owner=request.user)
+    meeting_request.status = 'accepted'
+    meeting_request.save()
+    messages.success(request, 'Solicitação de encontro aceita.')
+    return redirect('chat', meeting_request_id=meeting_request.id)
+
+@login_required
+def decline_meeting_request(request, request_id):
+    meeting_request = get_object_or_404(MeetingRequest, id=request_id, receiver_pet__owner=request.user)
+    meeting_request.status = 'declined'
+    meeting_request.save()
+    messages.info(request, 'Solicitação de encontro recusada.')
+    return redirect('meeting_requests')
+
+@login_required
+def chat(request, meeting_request_id):
+    meeting_request = get_object_or_404(MeetingRequest, id=meeting_request_id)
+    # Verificar se o usuário faz parte do chat
+    if request.user not in [meeting_request.sender_pet.owner, meeting_request.receiver_pet.owner]:
+        return redirect('home')
+
+    if meeting_request.status != 'accepted':
+        messages.warning(request, 'O chat só está disponível após a solicitação ser aceita.')
+        return redirect('meeting_requests')
+
+    if request.method == 'POST':
+        form = ChatMessageForm(request.POST)
+        if form.is_valid():
+            chat_message = form.save(commit=False)
+            chat_message.meeting_request = meeting_request
+            chat_message.sender = request.user
+            chat_message.save()
+            return redirect('chat', meeting_request_id=meeting_request.id)
+    else:
+        form = ChatMessageForm()
+
+    messages = ChatMessage.objects.filter(meeting_request=meeting_request).order_by('timestamp')
+    return render(request, 'main/chat.html', {'meeting_request': meeting_request, 'messages': messages, 'form': form})
