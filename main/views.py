@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 
-from .forms import PetForm, SignUpForm
+from .forms import PetForm, PreferencesForm, SignUpForm
 from .models import Message, Pet, Preferences
 
 
@@ -103,3 +103,52 @@ def delete_pet(request, pet_id):
         pet.delete()
         return redirect('profile')
     return render(request, 'main/delete_pet.html', {'pet': pet})
+
+@login_required
+def create_preferences(request):
+    pet = Pet.objects.get(owner=request.user)
+    if request.method == 'POST':
+        form = PreferencesForm(request.POST)
+        if form.is_valid():
+            preferences = form.save(commit=False)
+            preferences.pet = pet
+            preferences.save()
+            return redirect('profile')
+    else:
+        form = PreferencesForm()
+    return render(request, 'main/create_preferences.html', {'form': form})
+
+@login_required
+def edit_preferences(request):
+    pet = Pet.objects.get(owner=request.user)
+    try:
+        preferences = Preferences.objects.get(pet=pet)
+    except Preferences.DoesNotExist:
+        return redirect('create_preferences')
+    if request.method == 'POST':
+        form = PreferencesForm(request.POST, instance=preferences)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = PreferencesForm(instance=preferences)
+    return render(request, 'main/edit_preferences.html', {'form': form})
+
+@login_required
+def find_matches(request):
+    try:
+        pet = Pet.objects.get(owner=request.user)
+    except Pet.DoesNotExist:
+        return redirect('create_pet')
+    try:
+        preferences = Preferences.objects.get(pet=pet)
+    except Preferences.DoesNotExist:
+        return redirect('create_preferences')
+    matches = Pet.objects.filter(
+        pet_type=preferences.pet_type,
+        age__gte=preferences.age_min,
+        age__lte=preferences.age_max,
+        interests__icontains=preferences.interests,
+        location__icontains=pet.location
+    ).exclude(owner=request.user)
+    return render(request, 'main/matches.html', {'matches': matches})

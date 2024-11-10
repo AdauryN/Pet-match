@@ -16,4 +16,6 @@ urlpatterns = [
     path('inbox/', views.inbox, name='inbox'),
     path('edit_pet/<int:pet_id>/', views.edit_pet, name='edit_pet'),
     path('delete_pet/<int:pet_id>/', views.delete_pet, name='delete_pet'),
+    path('preferences/create/', views.create_preferences, name='create_preferences'),
+    path('preferences/edit/', views.edit_preferences, name='edit_preferences'),
 ]
