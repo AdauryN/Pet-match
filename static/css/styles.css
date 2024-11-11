@@ -1,25 +1,19 @@
-/* styles.css */
-
-/* Importar fontes do Google Fonts */
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap');
 
-/* Reset CSS para garantir consistência entre navegadores */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Estilos gerais */
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #FFF8E1; /* Amarelo claro */
-    color: #5D4037; /* Marrom escuro */
+    background-color: #FFF8E1;
+    color: #5D4037;
 }
 
-/* Cabeçalho */
 header {
-    background-color: #FFA726; /* Laranja */
+    background-color: #FFA726;
     color: white;
     padding: 20px;
     text-align: center;
@@ -30,9 +24,8 @@ header h1 {
     font-weight: 700;
 }
 
-/* Navegação */
 nav {
-    background-color: #FFB74D; /* Laranja claro */
+    background-color: #FFB74D;
 }
 
 nav ul {
@@ -54,39 +47,49 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #FFD54F; /* Amarelo escuro */
+    background-color: #FFD54F;
     color: white;
     border-radius: 5px;
 }
 
-/* Conteúdo principal */
 main {
     padding: 20px;
-    min-height: calc(100vh - 160px); /* Ajuste para evitar que o footer cubra o conteúdo */
+    min-height: calc(100vh - 160px);
 }
 
-/* Rodapé */
 footer {
-    background-color: #FFA726; /* Laranja */
+    background-color: #FFA726;
     color: white;
     text-align: center;
     padding: 10px;
-    position: relative; /* Alterado de fixed para relative */
+    position: relative;
     width: 100%;
     bottom: 0;
 }
 
-/* Estilos para os cards de pets */
 .pet-card {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
+    background-color: #FFF3E0;
+    border: 1px solid #FFB74D;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
 }
 
 .pet-card img {
     max-width: 150px;
     border-radius: 8px;
     margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+.pet-card .details {
+    flex: 1;
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
 }
 
 .pet-card h3 {
@@ -99,29 +102,15 @@ footer {
     margin: 5px 0;
 }
 
-.pet-card .details {
-    flex: 1;
-    min-width: 250px;
-}
-
-
-.pet-actions {
-    margin-top: 10px;
+.pet-card .pet-actions {
+    margin-top: 20px;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
 }
 
-.pet-card .pet-actions {
-    margin-top: 10px;
-}
-
-.pet-card .pet-actions a {
-    margin-right: 10px;
-}
-
 button, .button {
-    background-color: #FFA726; /* Laranja */
+    background-color: #FFA726;
     color: white;
     padding: 10px 15px;
     border: none;
@@ -129,26 +118,23 @@ button, .button {
     cursor: pointer;
     font-size: 16px;
     text-decoration: none;
-    margin: 5px; /* Adicionado para criar espaço ao redor dos botões */
 }
 
 button:hover, .button:hover {
-    background-color: #FB8C00; /* Laranja escuro */
+    background-color: #FB8C00;
 }
 
 .button-secondary {
-    background-color: #FFF3E0; /* Amarelo muito claro */
+    background-color: #FFF3E0;
     color: #5D4037;
     border: 1px solid #FFB74D;
-    margin: 5px; /* Adicionado para o botão secundário também */
 }
 
 .button-secondary:hover {
-    background-color: #FFD54F; /* Amarelo escuro */
+    background-color: #FFD54F;
     color: white;
 }
 
-/* Formulários */
 form {
     max-width: 600px;
     margin: 0 auto;
@@ -176,23 +162,21 @@ form input, form textarea, form select {
 
     .pet-card img {
         margin-right: 0;
-        margin-bottom: 10px;
     }
 
     .pet-card .details {
         min-width: 100%;
     }
 
-    .pet-actions {
+    .pet-card .pet-actions {
         flex-direction: column;
         align-items: flex-start;
     }
 }
 
-/* Estilos para as solicitações de encontro */
 .request-card {
-    background-color: #FFF3E0; /* Amarelo muito claro */
-    border: 1px solid #FFB74D; /* Laranja claro */
+    background-color: #FFF3E0;
+    border: 1px solid #FFB74D;
     border-radius: 8px;
     padding: 15px;
     margin-bottom: 20px;
@@ -202,7 +186,6 @@ form input, form textarea, form select {
     margin: 5px 0;
 }
 
-/* Estilos para o chat */
 .chat-messages {
     max-height: 400px;
     overflow-y: auto;
@@ -215,4 +198,57 @@ form input, form textarea, form select {
 
 .chat-message p {
     margin: 0;
+}
+
+.messages {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.messages li {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.messages li.info {
+    background-color: #2196F3;
+    color: white;
+}
+
+.messages li.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.messages li.warning {
+    background-color: #FFC107;
+    color: black;
+}
+
+.messages li.error {
+    background-color: #F44336;
+    color: white;
+}
+
+h2 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.profile-actions {
+    margin-bottom: 20px;
+}
+
+.profile-actions .button {
+    display: inline-block;
+}
+
+.profile-actions .button {
+    margin-top: 10px;
+}
+
+.profile-actions + h2 {
+    margin-top: 30px;
 }

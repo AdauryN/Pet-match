@@ -2,7 +2,9 @@
 
 {% block content %}
     <h2>Perfil de {{ user.username }}</h2>
-    <p><a class="button" href="{% url 'create_pet' %}">Cadastrar Novo Pet</a></p>
+    <div class="profile-actions">
+        <a class="button" href="{% url 'create_pet' %}">Cadastrar Novo Pet</a>
+    </div>
     <h2>Seus Pets:</h2>
     {% for pet in pets %}
         <div class="pet-card">
