@@ -1,0 +1,22 @@
+docker start meu-postgres
+
+docker exec -it meu-postgres bash
+
+psql -U meu_usuario -d meu_banco
+
+INSERT INTO main_pet (name, pet_type, description)
+VALUES ('Adaudog', 'Cachorro', 'Gosta de tomar uma');
+
+SELECT * FROM main_pet;
+
+SELECT * FROM main_pet WHERE name = 'Adaudog';
+
+DELETE FROM main_pet WHERE name = 'Adaudog';
+
+SELECT * FROM main_pet WHERE name = 'Adaudog';
+
+\q
+
+exit
+
+docker stop meu-postgres
